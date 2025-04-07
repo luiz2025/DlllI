@@ -1,0 +1,649 @@
+/* Estilos Gerais e Reset (Mantenha os seus básicos) */
+:root {
+    --primary-color: #4a90e2; /* Azul */
+    --secondary-color: #50e3c2; /* Verde Água */
+    --accent-color: #f5a623; /* Laranja */
+    --text-color: #333;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --locked-color: #adb5bd;
+
+    --dark-text-color: #e0e0e0;
+    --dark-bg-color: #1a1a1a; /* Fundo escuro mais suave */
+    --dark-card-bg: #2c2c2c; /* Cartões um pouco mais claros */
+    --dark-border-color: #444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+}
+
+body.dark-mode {
+    --text-color: var(--dark-text-color);
+    --bg-color: var(--dark-bg-color);
+    --card-bg: var(--dark-card-bg);
+    --border-color: var(--dark-border-color);
+}
+
+.hidden { display: none !important; }
+.active { display: block; } /* Ou flex/grid dependendo do contexto */
+
+/* --- Layout Principal --- */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 20px 0;
+    position: fixed; /* Ou absolute dependendo do efeito desejado */
+    left: -250px; /* Escondido por padrão */
+    top: 0;
+    height: 100%;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+body.sidebar-open .sidebar {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar .menu-item {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar .menu-item:hover,
+.sidebar .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar .menu-item .icon {
+    margin-right: 10px;
+    width: 20px; /* Alinhamento ícones */
+    text-align: center;
+}
+
+.sidebar .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+.main-content {
+    flex-grow: 1;
+    margin-left: 0; /* Muda com JS */
+    transition: margin-left 0.3s ease;
+    padding-bottom: 20px; /* Espaço no final */
+}
+
+body.sidebar-open .main-content {
+     /* Descomente se quiser que o conteúdo empurre: */
+     /* margin-left: 250px; */
+     /* Ou adicione overlay: */
+     position: relative; /* Para z-index funcionar */
+     z-index: 1; /* Fica abaixo do sidebar */
+}
+body.sidebar-open::before { /* Overlay escuro */
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Acima do conteúdo, abaixo do sidebar */
+    display: block; /* Mostra overlay */
+}
+@media (min-width: 769px) { /* Em telas maiores, sidebar empurra conteúdo */
+     .sidebar {
+        left: 0; /* Sempre visível */
+        position: sticky; /* Fica fixo na rolagem */
+        top: 0;
+        height: 100vh; /* Ocupa altura toda */
+    }
+     .main-content {
+        margin-left: 250px;
+    }
+     .menu-btn { display: none; } /* Esconde botão hamburguer */
+     .sidebar .close-btn { display: none; } /* Esconde botão fechar */
+     body.sidebar-open::before { display: none; } /* Sem overlay */
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 900; /* Abaixo do sidebar */
+}
+
+.main-header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+body.dark-mode .main-header .logo {
+    color: var(--secondary-color);
+}
+
+.main-header .logo img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-btn, .theme-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+.theme-toggle-btn .icon-sun { display: none; }
+.dark-mode .theme-toggle-btn .icon-moon { display: none; }
+.dark-mode .theme-toggle-btn .icon-sun { display: block; }
+
+
+.profile-pic img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* --- Página de Login --- */
+#login-page { display: flex; } /* Usa flex para centralizar */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--primary-color); /* Fundo azul */
+}
+.login-box {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    color: var(--text-color); /* Cor do texto dentro da caixa */
+}
+.login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+     color: var(--primary-color); /* Logo azul */
+}
+.login-logo img { height: 40px; margin-right: 10px;}
+.login-box h2 {
+    margin-bottom: 25px;
+    color: var(--text-color);
+}
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+.input-group input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Espaço para ícone */
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+.login-message {
+    margin-top: 15px;
+    color: var(--danger-color);
+    min-height: 1.2em; /* Evita pulo de layout */
+}
+.hint {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: 10px;
+}
+
+
+/* --- Botões --- */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease, opacity 0.2s;
+    text-decoration: none; /* Para links com classe btn */
+    display: inline-block; /* Para links */
+    text-align: center;
+}
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.btn-login, .btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.btn-login:hover, .btn-primary:hover {
+    background-color: #3a7bc8; /* Tom mais escuro */
+}
+.btn-continue {
+     background-color: var(--secondary-color);
+     color: #fff;
+}
+.btn-continue:hover {
+     background-color: #40c0a0; /* Tom mais escuro */
+}
+.btn-start {
+     background-color: var(--accent-color);
+     color: #fff;
+}
+.btn-start:hover {
+     background-color: #d8901f;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+.btn-secondary:hover {
+     background-color: #5a6268;
+}
+.btn-success { background-color: var(--success-color); color: #fff; }
+.btn-danger { background-color: var(--danger-color); color: #fff; }
+.btn-success:hover { background-color: #218838; }
+.btn-danger:hover { background-color: #c82333; }
+
+
+/* --- Cards --- */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    overflow: hidden; /* Garante que conteúdo não vaze */
+}
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.card-header h2, .card-header h3, .card-header h4 { margin: 0; }
+.card-body { margin-bottom: 15px; }
+.card-footer { text-align: right; }
+
+/* --- Página Inicial --- */
+.home-layout {
+    display: grid;
+    grid-template-columns: 1fr; /* Uma coluna por padrão */
+    gap: 20px;
+}
+@media (min-width: 992px) { /* Duas colunas em telas maiores */
+    .home-layout {
+        grid-template-columns: 2fr 1fr; /* Módulos ocupam 2/3, ranking 1/3 */
+    }
+}
+.modules-section h3 { margin-bottom: 15px; }
+
+.card-module .status-icon { font-size: 1.2em; }
+.card-module .status-icon.in-progress { color: var(--accent-color); }
+.card-module .status-icon.not-started { color: var(--locked-color); }
+.card-module .status-icon.completed { color: var(--success-color); }
+.card-module .status-icon.locked { color: var(--locked-color); }
+
+.card-module.card--locked {
+     opacity: 0.7;
+     background-color: #eee; /* Fundo levemente diferente */
+}
+body.dark-mode .card-module.card--locked {
+     background-color: #333;
+}
+
+.progress-indicator {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+}
+body.dark-mode .progress-indicator { color: #aaa; }
+.progress-bar-container {
+    flex-grow: 1;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 10px;
+}
+.progress-bar {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+}
+
+.card-ranking h3 { text-align: center; margin-bottom: 15px; }
+.ranking-list { list-style: none; }
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.ranking-item:last-child { border-bottom: none; }
+.ranking-item img { height: 30px; width: 30px; border-radius: 50%; margin-right: 10px; }
+.ranking-item span:first-of-type { flex-grow: 1; font-weight: bold; }
+.ranking-item .rank-glow { /* Placeholder para efeito */ display: none; }
+
+/* --- Página Módulos Libras --- */
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.module-libras-card {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; /* Para o ícone de cadeado */
+}
+.module-libras-card:not(.card--locked):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+.module-libras-card .module-icon {
+    font-size: 3em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.module-libras-card h4 { margin-bottom: 10px; }
+.module-libras-card p { font-size: 0.9em; color: #666; min-height: 3em; } /* Altura mínima */
+body.dark-mode .module-libras-card p { color: #aaa; }
+.module-libras-card .progress-bar-container { margin-top: 15px; }
+.module-libras-card .lock-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5em;
+    color: var(--locked-color);
+}
+.module-libras-card.card--locked { cursor: default; }
+
+/* --- Detalhes do Módulo --- */
+#module-detail-placeholder .btn-back { margin-bottom: 20px; }
+#module-detail-placeholder h3 { margin-bottom: 10px; color: var(--primary-color); }
+#module-detail-placeholder ul { list-style: disc; margin-left: 20px; margin-bottom: 20px; }
+#module-detail-placeholder .btn { margin-right: 10px; margin-top: 10px; }
+
+/* --- Chatbot / Atividades --- */
+.chatbot-container { padding: 0; /* Remover padding do card */ display: flex; flex-direction: column; height: 60vh; /* Altura definida */ }
+.chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+.bot-message {
+    background-color: #e9e9eb;
+    color: #333;
+    border-bottom-left-radius: 0;
+    align-self: flex-start;
+}
+.user-message {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-bottom-right-radius: 0;
+    margin-left: auto; /* Alinha à direita */
+    text-align: right;
+}
+.dark-mode .bot-message { background-color: #444; color: var(--dark-text-color); }
+
+.chatbot-quick-replies {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.quick-reply-btn {
+    background-color: var(--secondary-color);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+.quick-reply-btn:hover { background-color: #40c0a0; }
+
+.chatbot-input-area {
+    display: flex;
+    padding: 15px 20px;
+    background-color: var(--card-bg); /* Mesmo fundo do card */
+}
+#chatbot-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1em;
+     background-color: var(--bg-color); /* Fundo do input igual ao body */
+     color: var(--text-color);
+}
+#chatbot-send-btn {
+    border-radius: 50%; /* Botão redondo */
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    font-size: 1.2em;
+}
+
+/* --- Exercícios --- */
+.exercise-list { display: flex; flex-direction: column; gap: 20px; }
+.exercise-card h4 { margin-bottom: 15px; color: var(--primary-color); }
+.options-container { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+.option-btn {
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-grow: 1; /* Tenta ocupar espaço igual */
+}
+.option-btn img { max-width: 100px; display: block; margin: 0 auto; }
+.option-btn:hover:not([disabled]) { border-color: var(--primary-color); background-color: #eef; }
+.dark-mode .option-btn:hover:not([disabled]) { background-color: #3a3a3a; }
+
+.option-btn.selected { border-color: var(--primary-color); }
+.option-btn.correct { border-color: var(--success-color); background-color: #d4edda; color: #155724;}
+.option-btn.incorrect { border-color: var(--danger-color); background-color: #f8d7da; color: #721c24;}
+.dark-mode .option-btn.correct { background-color: #2a4a34; color: #c3e6cb; }
+.dark-mode .option-btn.incorrect { background-color: #5a2a2f; color: #f5c6cb; }
+
+.option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 1.2em; /* Evita pulo */
+}
+.feedback.correct { color: var(--success-color); }
+.feedback.incorrect { color: var(--danger-color); }
+
+.exercise-content { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+.exercise-image { max-height: 80px; border: 1px solid var(--border-color); }
+.exercise-input { flex-grow: 1; display: flex; align-items: center; }
+.exercise-input label { margin-right: 5px; }
+.exercise-input input[type="text"] {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 50px; /* Tamanho pequeno para letra */
+    text-align: center;
+    font-size: 1.2em;
+    text-transform: uppercase; /* Força maiúscula */
+}
+.text-options .option-btn { padding: 15px; text-align: center; } /* Opções de texto */
+
+
+/* --- Página de Gestos --- */
+.gesture-card { position: relative; } /* Para status da câmera */
+.gesture-area {
+    display: grid;
+    grid-template-columns: 1fr; /* Uma coluna mobile */
+    gap: 20px;
+    align-items: center;
+}
+@media (min-width: 768px) { /* Duas colunas desktop */
+    .gesture-area { grid-template-columns: 1fr 1fr; }
+}
+
+.webcam-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px; /* Limita largura máxima */
+    aspect-ratio: 4 / 3; /* Proporção comum de webcam */
+    background-color: #333; /* Fundo escuro para vídeo */
+    border-radius: 8px;
+    overflow: hidden; /* Esconde partes fora da borda */
+    margin: 0 auto; /* Centraliza se for menor que o espaço */
+}
+#webcam-feed {
+    display: block; /* Remove espaço extra abaixo */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cobre a área sem distorcer */
+    transform: scaleX(-1); /* Espelha horizontalmente - comum para webcam */
+}
+#webcam-status {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+.gesture-card.camera-active #webcam-status { background-color: var(--success-color); }
+
+.gesture-instruction { text-align: center; }
+.gesture-instruction p:first-child { font-size: 1.4em; margin-bottom: 10px; }
+#target-gesture { color: var(--primary-color); font-size: 1.5em; }
+.dark-mode #target-gesture { color: var(--secondary-color); }
+.gesture-instruction .feedback { font-size: 1.1em; margin-top: 15px; }
+.gesture-controls { margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+.disclaimer { font-size: 0.85em; color: #666; margin-top: 20px; text-align: center; }
+.dark-mode .disclaimer { color: #aaa; }
+
+/* --- Configurações --- */
+.settings-card { margin-bottom: 30px; }
+.settings-card h4 { margin-bottom: 20px; color: var(--primary-color); }
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.setting-item label { flex-grow: 1; margin-right: 15px; }
+.setting-item input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
+.setting-item select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+}
+#save-prefs-btn { margin-top: 10px; }
+
+/* --- Responsividade Adicional --- */
+@media (max-width: 768px) {
+    .sidebar { width: 220px; left: -220px; } /* Menu um pouco menor */
+    body.sidebar-open .main-content { /* Não empurra conteúdo */
+       margin-left: 0;
+    }
+    .main-header .logo span { display: none; } /* Esconde texto Dilli no mobile */
+    .main-header .logo img { margin-right: 0; }
+    .home-layout { grid-template-columns: 1fr; } /* Garante uma coluna */
+    .gesture-area { grid-template-columns: 1fr; }
+    .chatbot-container { height: 70vh; } /* Mais altura no mobile */
+    .message { max-width: 90%; }
+    .modules-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+}

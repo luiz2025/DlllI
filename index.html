@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dilli - Plataforma de Aprendizagem Aprimorada</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class=""> <!-- Classe 'dark-mode' será adicionada via JS -->
+
+    <!-- ===== TELA DE LOGIN ===== -->
+    <section id="login-page" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="logo login-logo">
+                    <img src="placeholder-logo.png" alt="Dilli Logo"> Dilli
+                </div>
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="username"><i class="fas fa-user"></i></label>
+                        <input type="text" id="username" placeholder="Usuário (luiz)" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password"><i class="fas fa-lock"></i></label>
+                        <input type="password" id="password" placeholder="Senha (1234)" required>
+                    </div>
+                    <button type="submit" class="btn btn-login">Entrar</button>
+                    <p class="login-message" id="login-message"></p>
+                </form>
+                 <p class="hint">Usuário: luiz / Senha: 1234</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== APLICAÇÃO PRINCIPAL (Após Login) ===== -->
+    <div id="main-app" class="app-container hidden">
+
+        <!-- Menu Lateral (Sidebar) -->
+        <nav class="sidebar" id="sidebar-menu">
+            <button class="close-btn" onclick="toggleMenu()">×</button> <!-- JS Global -->
+            <ul>
+                <li><a href="#" class="menu-item active" data-target="home-screen"><i class="fas fa-home icon"></i> Início</a></li>
+                <li><a href="#" class="menu-item" data-target="libras-modules-page"><i class="fas fa-book-open icon"></i> Módulos Libras</a></li>
+                 <!-- Link direto para Atividades/Exercícios pode ser redundante se acessados pelos módulos -->
+                <li><a href="#" class="menu-item" data-target="activities-page"><i class="fas fa-comments icon"></i> Atividade Atual</a></li>
+                <li><a href="#" class="menu-item" data-target="exercises-page"><i class="fas fa-pencil-alt icon"></i> Exercícios Gerais</a></li>
+                <li><a href="#" class="menu-item" data-target="gesture-page"><i class="fas fa-hand-paper icon"></i> Prática de Gestos</a></li>
+                <li><a href="#" class="menu-item" data-target="settings-page"><i class="fas fa-cog icon"></i> Configurações</a></li>
+                <li><a href="#" class="menu-item" id="logout-btn"><i class="fas fa-sign-out-alt icon"></i> Sair</a></li>
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal Dinâmico -->
+        <div class="main-content" id="main-content">
+
+            <header class="main-header">
+                <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button> <!-- JS Global -->
+                <div class="logo">
+                    <img src="placeholder-logo.png" alt="Dilli Logo"> Dilli
+                </div>
+                <div class="header-controls">
+                    <button id="theme-toggle-btn" class="theme-toggle-btn">
+                        <i class="fas fa-moon icon-moon"></i>
+                        <i class="fas fa-sun icon-sun"></i>
+                    </button>
+                    <div class="profile-pic">
+                        <img src="placeholder-profile.jpg" alt="User Profile">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo das páginas é carregado aqui -->
+            <main class="container">
+
+                <!-- == Tela Inicial == -->
+                <section id="home-screen" class="page active">
+                    <h2>Bem-vindo de volta!</h2>
+                    <p>Continue seu aprendizado de onde parou.</p>
+                    <div class="home-layout">
+                        <section class="modules-section">
+                            <h3>Seu Progresso</h3>
+                            <!-- Módulos Principais -->
+                            <article class="card card-module card--active nav-link" data-target="module-detail-placeholder" data-module-id="m1">
+                                <div class="card-header"><h2>M1: Alfabeto</h2><i class="fas fa-spinner status-icon in-progress"></i></div>
+                                <div class="card-body"><p>Introdução e letras A-G.</p><div class="progress-indicator"><span>Progresso: </span><div class="progress-bar-container"><div class="progress-bar" style="width: 60%;"></div></div><span> 60%</span></div></div>
+                                <div class="card-footer"><button class="btn btn-continue nav-link" data-target="activities-page">Continuar Atividade</button></div>
+                            </article>
+                             <article class="card card-module card--unlocked nav-link" data-target="module-detail-placeholder" data-module-id="m2">
+                                <div class="card-header"><h2>M2: Números</h2><i class="far fa-circle status-icon not-started"></i></div>
+                                <div class="card-body"><p>Aprenda os números cardinais básicos.</p><div class="progress-indicator"><span>Progresso: </span><div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div><span> 0%</span></div></div>
+                                <div class="card-footer"><button class="btn btn-start nav-link" data-target="module-detail-placeholder" data-module-id="m2">Iniciar Módulo</button></div>
+                            </article>
+                            <article class="card card-module card--locked">
+                                <div class="card-header"><h2>M3: Cumprimentos</h2><i class="fas fa-lock status-icon locked"></i></div>
+                                <div class="card-body"><p>Saudações e frases comuns.</p><div class="progress-indicator"><span>Progresso: </span><div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div><span> 0%</span></div></div>
+                                <div class="card-footer"><button class="btn btn-start" disabled>Bloqueado</button></div>
+                            </article>
+                             <article class="card card-module card--locked">
+                                <div class="card-header"><h2>M4: Família</h2><i class="fas fa-lock status-icon locked"></i></div>
+                                <div class="card-body"><p>Termos para membros da família.</p><div class="progress-indicator"><span>Progresso: </span><div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div><span> 0%</span></div></div>
+                                <div class="card-footer"><button class="btn btn-start" disabled>Bloqueado</button></div>
+                            </article>
+                        </section>
+                        <aside class="ranking-section">
+                            <div class="card card-ranking">
+                                <h3>Ranking Semanal</h3>
+                                <ul class="ranking-list">
+                                     <!-- Ranking permanece igual -->
+                                    <li class="ranking-item"><img src="placeholder-rank1.jpg" alt="R"><span>Rickgrimes16</span><span class="rank-glow"></span></li>
+                                    <li class="ranking-item"><img src="placeholder-rank2.jpg" alt="L"><span>Lewishamilton25</span><span class="rank-glow"></span></li>
+                                    <li class="ranking-item"><img src="placeholder-rank3.jpg" alt="L"><span>Leclerc2550</span><span class="rank-glow"></span></li>
+                                    <li class="ranking-item"><img src="placeholder-rank4.jpg" alt="G"><span>Glen2405</span><span class="rank-glow"></span></li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
+                <!-- == Tela de Módulos Libras (Visão Geral) == -->
+                 <section id="libras-modules-page" class="page hidden">
+                     <h2>Módulos de Aprendizagem - Libras</h2>
+                     <div class="modules-grid">
+                         <!-- Módulos listados aqui, podem ser gerados por JS ou estáticos -->
+                         <div class="card module-libras-card nav-link" data-target="module-detail-placeholder" data-module-id="m1">
+                             <i class="fas fa-sort-alpha-down module-icon"></i>
+                             <h4>M1: Alfabeto Manual</h4>
+                             <p>Aprenda as letras do alfabeto em Libras (A-Z).</p>
+                             <div class="progress-bar-container"><div class="progress-bar" style="width: 60%;"></div></div>
+                         </div>
+                         <div class="card module-libras-card nav-link" data-target="module-detail-placeholder" data-module-id="m2">
+                             <i class="fas fa-sort-numeric-down module-icon"></i>
+                             <h4>M2: Números</h4>
+                             <p>Como representar números cardinais (0-100).</p>
+                              <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                         </div>
+                         <div class="card module-libras-card nav-link card--locked" data-target="module-detail-placeholder" data-module-id="m3">
+                              <i class="fas fa-handshake module-icon"></i>
+                             <h4>M3: Cumprimentos</h4>
+                             <p>Saudações (Oi, Tchau) e frases básicas (Tudo bem?).</p>
+                              <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                              <i class="fas fa-lock lock-icon"></i>
+                         </div>
+                         <div class="card module-libras-card nav-link card--locked" data-target="module-detail-placeholder" data-module-id="m4">
+                              <i class="fas fa-users module-icon"></i>
+                             <h4>M4: Família</h4>
+                             <p>Sinais para Pai, Mãe, Irmão, etc.</p>
+                              <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                               <i class="fas fa-lock lock-icon"></i>
+                         </div>
+                          <div class="card module-libras-card card--locked">
+                              <i class="fas fa-question module-icon"></i>
+                             <h4>M5: Perguntas</h4>
+                             <p>Como fazer perguntas comuns (O quê?, Quem?, Onde?).</p>
+                             <i class="fas fa-lock lock-icon"></i>
+                         </div>
+                         <div class="card module-libras-card card--locked">
+                              <i class="fas fa-paint-brush module-icon"></i>
+                             <h4>M6: Cores</h4>
+                             <p>Sinais para as cores primárias e secundárias.</p>
+                             <i class="fas fa-lock lock-icon"></i>
+                         </div>
+                     </div>
+                 </section>
+
+                 <!-- Placeholder para Detalhe do Módulo (simulação) -->
+                 <section id="module-detail-placeholder" class="page hidden">
+                     <button class="btn btn-back nav-link" data-target="libras-modules-page"><i class="fas fa-arrow-left"></i> Voltar para Módulos</button>
+                     <h2 id="module-detail-title">Detalhes do Módulo</h2>
+                     <div class="card">
+                         <h3 id="module-detail-name">Nome do Módulo</h3>
+                         <p id="module-detail-description">Descrição detalhada do módulo...</p>
+                         <h4>Conteúdo:</h4>
+                         <ul id="module-detail-content-list">
+                             <li>Lição 1: Tópico A</li>
+                             <li>Lição 2: Tópico B</li>
+                             <li>Exercício Prático</li>
+                         </ul>
+                         <button class="btn btn-start-activity nav-link" data-target="activities-page">Iniciar Atividade do Módulo</button>
+                         <button class="btn btn-start-exercise nav-link" data-target="exercises-page">Fazer Exercícios do Módulo</button>
+                     </div>
+                 </section>
+
+
+                <!-- == Tela de Atividades (Chatbot Melhorado) == -->
+                <section id="activities-page" class="page hidden">
+                    <h2 id="activity-title">Atividade Atual: Módulo 1 - Alfabeto (A-G)</h2>
+                    <div class="card chatbot-container">
+                        <div class="chatbot-messages" id="chatbot-messages">
+                            <!-- Mensagens serão adicionadas aqui via JS -->
+                            <!-- Exemplo inicial movido para JS -->
+                        </div>
+                         <div class="chatbot-quick-replies" id="chatbot-quick-replies">
+                             <!-- Botões de resposta rápida aparecerão aqui -->
+                         </div>
+                        <div class="chatbot-input-area">
+                            <input type="text" id="chatbot-input" placeholder="Digite sua resposta ou clique acima...">
+                            <button id="chatbot-send-btn" class="btn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary nav-link" data-target="home-screen" style="margin-top: 15px;">Voltar para Início</button>
+                </section>
+
+                <!-- == Tela de Exercícios (Funcional) == -->
+                <section id="exercises-page" class="page hidden">
+                    <h2 id="exercise-title">Exercícios: Módulo 1 - Alfabeto</h2>
+                    <div class="exercise-list">
+                        <!-- Exercício 1: Múltipla Escolha (Funcional) -->
+                        <div class="card exercise-card" id="exercise-mcq-1">
+                            <h4>Exercício 1: Qual gesto representa a letra 'C'?</h4>
+                            <div class="options-container mcq-options" data-correct="option3" data-answered="false">
+                                <!-- Opções com imagens de gestos -->
+                                <button class="option-btn" data-option="option1"><img src="placeholder-libra-a.png" alt="Gesto A"></button>
+                                <button class="option-btn" data-option="option2"><img src="placeholder-libra-e.png" alt="Gesto E"></button>
+                                <button class="option-btn" data-option="option3"><img src="placeholder-libra-c.png" alt="Gesto C"></button>
+                            </div>
+                            <p class="feedback" id="feedback-ex1"></p>
+                        </div>
+
+                        <!-- Exercício 2: Associar Imagem-Palavra (Simples) -->
+                        <div class="card exercise-card" id="exercise-match-1">
+                             <h4>Exercício 2: Qual letra corresponde a este gesto?</h4>
+                             <div class="exercise-content">
+                                 <img src="placeholder-libra-b.png" alt="Gesto Desconhecido" class="exercise-image">
+                                 <div class="input-group exercise-input">
+                                     <label for="match-input-1">Letra:</label>
+                                     <input type="text" id="match-input-1" maxlength="1" data-correct="B">
+                                 </div>
+                                 <button class="btn btn-verify" id="verify-match-1">Verificar</button>
+                             </div>
+                             <p class="feedback" id="feedback-ex2"></p>
+                        </div>
+
+                         <!-- Exercício 3: Múltipla Escolha (Outro Exemplo) -->
+                        <div class="card exercise-card" id="exercise-mcq-2">
+                            <h4>Exercício 3: Qual destes NÃO é um cumprimento comum em Libras?</h4>
+                             <div class="options-container mcq-options text-options" data-correct="option2" data-answered="false">
+                                <!-- Opções com texto -->
+                                <button class="option-btn" data-option="option1">OI</button>
+                                <button class="option-btn" data-option="option2">POR FAVOR</button> <!-- Resposta Correta -->
+                                <button class="option-btn" data-option="option3">TCHAU</button>
+                                <button class="option-btn" data-option="option4">TUDO BEM?</button>
+                            </div>
+                            <p class="feedback" id="feedback-ex3"></p>
+                        </div>
+
+                    </div>
+                     <button class="btn btn-secondary nav-link" data-target="home-screen" style="margin-top: 15px;">Voltar para Início</button>
+                </section>
+
+                <!-- == Tela de Reconhecimento de Gestos (Com Câmera) == -->
+                <section id="gesture-page" class="page hidden">
+                    <h2>Prática com Reconhecimento de Gestos (Simulado)</h2>
+                    <div class="card gesture-card" id="gesture-card">
+                         <div class="gesture-area">
+                             <!-- Área do Vídeo da Webcam -->
+                              <div class="webcam-container">
+                                  <video id="webcam-feed" autoplay playsinline muted></video> <!-- muted é importante -->
+                                  <p id="webcam-status">Câmera desligada.</p>
+                              </div>
+                             <!-- Área de Instrução e Feedback -->
+                              <div class="gesture-instruction">
+                                 <p>Faça o gesto para: <strong id="target-gesture">A</strong></p>
+                                 <p class="feedback" id="gesture-feedback"></p>
+                                 <div class="gesture-controls">
+                                     <button class="btn btn-success" id="start-cam-btn"><i class="fas fa-video"></i> Iniciar Câmera</button>
+                                     <button class="btn btn-danger hidden" id="stop-cam-btn"><i class="fas fa-video-slash"></i> Parar Câmera</button>
+                                     <button class="btn btn-primary hidden" id="check-gesture-btn"><i class="fas fa-check"></i> Verificar Gesto (Simulado)</button>
+                                 </div>
+                              </div>
+                         </div>
+                         <p class="disclaimer">
+                            <strong>Nota:</strong> Esta funcionalidade usa sua webcam para prática visual. O reconhecimento do gesto é **simulado** para fins de aprendizado neste exemplo. Nenhuma imagem é salva ou enviada.
+                         </p>
+                    </div>
+                    <button class="btn btn-secondary nav-link" data-target="home-screen" style="margin-top: 15px;">Voltar para Início</button>
+                </section>
+
+                <!-- == Tela de Configurações (Igual antes) == -->
+                <section id="settings-page" class="page hidden">
+                    <h2>Configurações</h2>
+                    <div class="card settings-card">
+                        <h4>Configurações de Ranking</h4>
+                        <form id="ranking-settings-form">
+                            <div class="setting-item">
+                                <label for="show-ranking">Mostrar meu nome no Ranking Global</label>
+                                <input type="checkbox" id="show-ranking" name="show-ranking" checked>
+                            </div>
+                            <div class="setting-item">
+                                <label for="ranking-privacy">Visibilidade do meu progresso</label>
+                                <select id="ranking-privacy" name="ranking-privacy">
+                                    <option value="public">Público</option>
+                                    <option value="friends">Apenas Amigos (Simulado)</option>
+                                    <option value="private">Privado</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Salvar Configurações</button>
+                        </form>
+                    </div>
+                     <div class="card settings-card">
+                        <h4>Preferências da Conta</h4>
+                         <p>(Opções como alterar tema padrão, notificações, etc.)</p>
+                         <div class="setting-item">
+                              <label for="default-theme">Tema Padrão</label>
+                                <select id="default-theme" name="default-theme">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Escuro</option>
+                                </select>
+                         </div>
+                         <button type="button" class="btn" id="save-prefs-btn">Salvar Preferências</button>
+                    </div>
+                     <button class="btn btn-secondary nav-link" data-target="home-screen" style="margin-top: 15px;">Voltar para Início</button>
+                </section>
+
+            </main>
+        </div> <!-- Fim .main-content -->
+    </div> <!-- Fim #main-app -->
+
+    <script src="script.js"></script>
+     <!-- Adiciona função global para toggleMenu usada nos botões inline -->
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle('sidebar-open');
+        }
+    </script>
+</body>
+</html>
